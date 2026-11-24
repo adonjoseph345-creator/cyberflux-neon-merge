@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070814" />
+      <stop offset="50%" stop-color="#121738" />
+      <stop offset="100%" stop-color="#240b36" />
+    </linearGradient>
+    <linearGradient id="neon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" />
+      <stop offset="100%" stop-color="#ff007f" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="110" fill="url(#bg)" />
+  <rect x="36" y="36" width="440" height="440" rx="88" fill="none" stroke="url(#neon)" stroke-width="14" />
+  <g transform="translate(86, 86)">
+    <rect x="0" y="0" width="155" height="155" rx="28" fill="#0b3954" stroke="#00f0ff" stroke-width="8" />
+    <text x="77" y="102" font-family="Segoe UI, sans-serif" font-weight="900" font-size="72" fill="#ffffff" text-anchor="middle">64</text>
+    <rect x="185" y="0" width="155" height="155" rx="28" fill="#83142c" stroke="#ff007f" stroke-width="8" />
+    <text x="262" y="102" font-family="Segoe UI, sans-serif" font-weight="900" font-size="64" fill="#ffffff" text-anchor="middle">128</text>
+    <rect x="0" y="185" width="155" height="155" rx="28" fill="#3a1c71" stroke="#b57cff" stroke-width="8" />
+    <text x="77" y="287" font-family="Segoe UI, sans-serif" font-weight="900" font-size="64" fill="#ffffff" text-anchor="middle">256</text>
+    <rect x="185" y="185" width="155" height="155" rx="28" fill="#f7971e" stroke="#ffd200" stroke-width="8" />
+    <text x="262" y="285" font-family="Segoe UI, sans-serif" font-weight="900" font-size="76" fill="#070814" text-anchor="middle">⚡</text>
+  </g>
+</svg>
+

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#070814" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>CyberFlux: Neon Merge</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="bg-grid"></div>
+  <canvas id="fx-canvas"></canvas>
+
+  <div id="app">
+    <!-- Top HUD -->
+    <header class="hud">
+      <div class="brand">
+        <div class="brand-logo">⚡</div>
+        <div>
+          <h1 class="brand-title">CYBER<span>FLUX</span></h1>
+          <p class="brand-subtitle" id="mode-label">ENDLESS OVERDRIVE</p>
+        </div>
+      </div>
+
+      <div class="hud-actions">
+        <button id="btn-mode" class="icon-btn" title="Switch Game Mode">
+          <span id="mode-icon">∞</span>
+        </button>
+        <button id="btn-music" class="icon-btn" title="Toggle Cyberpunk Synthwave Music">
+          <span id="music-icon">🎵</span>
+        </button>
+        <button id="btn-voice" class="icon-btn" title="Toggle Cyber AI Voice Announcer">
+          <span id="voice-icon">🎙️</span>
+        </button>
+        <button id="btn-sound" class="icon-btn" title="Toggle Sound Effects">
+          <span id="sound-icon">🔊</span>
+        </button>
+        <button id="btn-help" class="icon-btn" title="How to Play & Play Store Guide">
+          <span>?</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Score & Combo Bar -->
+    <section class="stats-bar">
+      <div class="stat-card">
+        <span class="stat-label">SCORE</span>
+        <span class="stat-value" id="score-val">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">BEST</span>
+        <span class="stat-value accent-gold" id="best-val">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">MAX NODE</span>
+        <span class="stat-value accent-cyan" id="max-tile-val">Lv.1</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">MOVES / THREAT</span>
+        <span class="stat-value accent-pink" id="moves-val">0</span>
+      </div>
+    </section>
+
+    <!-- Overcharge / Chain Multiplier Meter -->
+    <section class="overcharge-bar-wrap">
+      <div class="overcharge-header">
+        <span class="overcharge-title">⚡ FLUX ENERGY <small>(Power-Up Fuel)</small></span>
+        <span class="combo-badge" id="combo-badge">CHAIN x1</span>
+      </div>
+      <div class="overcharge-track">
+        <div class="overcharge-fill" id="energy-fill" style="width: 35%"></div>
+      </div>
+      <div class="energy-text"><span id="energy-val">35</span> / 100 FLUX</div>
+    </section>
+
+    <!-- Main 5x5 Cyber Grid -->
+    <main class="board-container">
+      <div id="grid-board" class="grid-board" aria-label="Cyber Tile Grid"></div>
+      <div id="floating-announcements" class="floating-announcements"></div>
+    </main>
+
+    <!-- Tactical Power-Up Deck -->
+    <section class="powerups-bar">
+      <button class="power-btn" id="pwr-emp" data-power="emp">
+        <span class="pwr-icon">💥</span>
+        <div class="pwr-info">
+          <span class="pwr-name">EMP BLAST</span>
+          <span class="pwr-cost">25 Flux • Destroy 3x3</span>
+        </div>
+      </button>
+
+      <button class="power-btn" id="pwr-up" data-power="upgrade">
+        <span class="pwr-icon">🔼</span>
+        <div class="pwr-info">
+          <span class="pwr-name">OVERCLOCK</span>
+          <span class="pwr-cost">30 Flux • +1 Tile Lv</span>
+        </div>
+      </button>
+
+      <button class="power-btn" id="pwr-swap" data-power="quantum">
+        <span class="pwr-icon">🌀</span>
+        <div class="pwr-info">
+          <span class="pwr-name">QUANTUM SYNC</span>
+          <span class="pwr-cost">40 Flux • Pull Same Lv</span>
+        </div>
+      </button>
+
+      <button class="power-btn" id="pwr-shuffle" data-power="purge">
+        <span class="pwr-icon">🛡️</span>
+        <div class="pwr-info">
+          <span class="pwr-name">FIREWALL</span>
+          <span class="pwr-cost">35 Flux • Clear Malware</span>
+        </div>
+      </button>
+    </section>
+
+    <!-- Bottom Controls & Status -->
+    <footer class="bottom-bar">
+      <div id="status-prompt" class="status-prompt">
+        Tap any group of <strong>2+ matching adjacent nodes</strong> to merge & trigger chain reactions!
+      </div>
+      <button id="btn-restart" class="restart-btn">↻ NEW RUN</button>
+    </footer>
+  </div>
+
+  <!-- Game Over / Victory Modal -->
+  <div id="modal-gameover" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-badge" id="gameover-badge">SYSTEM OVERLOAD</div>
+      <h2 id="gameover-title">GRID LOCKED</h2>
+      <p id="gameover-desc">No adjacent matching nodes and insufficient Flux energy.</p>
+
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span>FINAL SCORE</span>
+          <strong id="final-score">0</strong>
+        </div>
+        <div class="summary-item">
+          <span>HIGHEST NODE</span>
+          <strong id="final-max-node">Lv.1</strong>
+        </div>
+        <div class="summary-item">
+          <span>MAX CHAIN</span>
+          <strong id="final-max-chain">x1</strong>
+        </div>
+        <div class="summary-item">
+          <span>TOTAL MERGES</span>
+          <strong id="final-merges">0</strong>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-play-again" class="primary-btn">⚡ REBOOT SYSTEM</button>
+        <button id="btn-share-score" class="secondary-btn">📋 COPY SCORE CARD</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Play & Play Store Info Modal -->
+  <div id="modal-help" class="modal hidden">
+    <div class="modal-card modal-large">
+      <div class="modal-badge">OPERATOR MANUAL</div>
+      <h2>HOW TO PLAY CYBERFLUX</h2>
+      <ul class="help-list">
+        <li><strong>1. Tap to Merge:</strong> Tap any tile connected to at least <strong>1 other tile of the same level</strong> (up/down/left/right). All connected tiles collapse into the tapped spot and level up!</li>
+        <li><strong>2. Chain Reactions:</strong> As new tiles drop via gravity, if the newly upgraded tile matches neighbors, you can rapidly chain combos for massive score multipliers and bonus <strong>Flux Energy</strong>.</li>
+        <li><strong>3. Malware & Virus Nodes (👾):</strong> Every few moves, a corrupted Virus tile spawns. Viruses block normal merges—destroy them by merging a <strong>4+ tile cluster</strong> next to them, or use <strong>EMP Blast / Firewall</strong>!</li>
+        <li><strong>4. Singularity Goal:</strong> Reach <strong>Lv.10 SINGULARITY</strong> to trigger an automatic board explosion and huge bonus points!</li>
+        <li><strong>5. Daily Blitz vs Endless Mode:</strong> Tap the <strong>∞ / 📅</strong> button at the top right to switch between Endless Overdrive and seeded Daily Tactical Blitz (35-move limit).</li>
+      </ul>
+
+      <div class="playstore-box">
+        <h3>🚀 Ready for Google Play Store</h3>
+        <p>This project includes full <strong>Capacitor Android</strong> configuration (<code>capacitor.config.json</code>), adaptive vector icons, PWA offline manifest, and release packaging scripts in <code>PLAY_STORE_GUIDE.md</code>.</p>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-close-help" class="primary-btn">RESUME MISSION</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
+

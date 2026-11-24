@@ -1,0 +1,19 @@
+{
+  "name": "CyberFlux: Neon Merge",
+  "short_name": "CyberFlux",
+  "description": "Addictive cyberpunk tile merge & chain-reaction strategy puzzle game.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070814",
+  "theme_color": "#070814",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

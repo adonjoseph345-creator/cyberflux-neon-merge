@@ -1,0 +1,16 @@
+{
+  "appId": "com.cyberflux.neonmerge",
+  "appName": "CyberFlux: Neon Merge",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "buildOptions": {
+      "releaseType": "AAB"
+    },
+    "backgroundColor": "#070814"
+  }
+}
+
